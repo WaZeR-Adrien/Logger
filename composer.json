@@ -1,6 +1,6 @@
 {
   "name": "adrienm/logger",
-  "description": "A PHP 7.2+ library that represents an equivalent of Java collections.",
+  "description": "A PHP 7.2+ library to create logs.",
   "version": "1.0.0",
   "homepage": "https://github.com/WaZeR-Adrien/Logger",
   "license": "MIT",
