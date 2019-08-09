@@ -1,5 +1,5 @@
 <?php
-namespace Src;
+namespace AdrienM\Logger;
 
 class LogException extends \Exception
 {

@@ -1,10 +1,10 @@
 <?php
-namespace Src;
+namespace AdrienM\Logger;
 
 class Logger
 {
     const DEFAULT_PATH = __DIR__ . "/logs/";
-
+    
     const LOG_DEBUG = "DEBUG";
     const LOG_INFO = "INFO";
     const LOG_ALERT = "ALERT";
