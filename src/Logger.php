@@ -32,24 +32,26 @@ class Logger
     protected $type;
 
     /**
-     * ApiLogger constructor.
+     * Logger constructor.
      * @param string $path
      * @param string $level
+     * @param string $type
      */
-    public function __construct(string $path, string $level = self::LOG_DEBUG)
+    public function __construct(string $path, string $level, string $type = null)
     {
         $this->path = $path;
         $this->level = $level;
+        $this->type = $type;
     }
 
     /**
-     * Get instance of the Logger with default path
+     * Get instance of the Logger
      * @param string $level
      * @return Logger
      */
-    public static function getInstance(string $level = self::LOG_DEBUG): Logger
+    public static function getInstance(string $path = self::DEFAULT_PATH, string $level = self::LOG_DEBUG): Logger
     {
-        return new self(Logger::DEFAULT_PATH . date("d-m-Y") . ".log", $level);
+        return new self($path . date("d-m-Y") . ".log", $level);
     }
 
     /**
@@ -62,10 +64,12 @@ class Logger
         try {
             $date = date("d/m/Y H:i:s");
 
+            $type = (null != $this->type ? $this->type : "");
+
             if (strpos($this->path, ".csv")) {
-                $begin = "$date, $this->level, ";
+                $begin = "$date, $this->level, $type ";
             } else {
-                $begin = "[$date] [$this->level] ";
+                $begin = "[$date] [$this->level] [type: $type]";
             }
 
             file_put_contents($this->path, $begin . $message . "\n", FILE_APPEND);
