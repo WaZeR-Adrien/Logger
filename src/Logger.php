@@ -3,7 +3,7 @@ namespace AdrienM\Logger;
 
 class Logger
 {
-    const DEFAULT_PATH = __DIR__ . "/logs/";
+    const DEFAULT_PATH = __DIR__ . "../../../logs/";
     
     const LOG_DEBUG = "DEBUG";
     const LOG_INFO = "INFO";
@@ -18,6 +18,12 @@ class Logger
      * @var string
      */
     protected $path;
+
+    /**
+     * Name of the log file
+     * @var string
+     */
+    protected $filename;
 
     /**
      * Level of the log (DEBUG, CRITICAL, ERROR...)
@@ -37,9 +43,10 @@ class Logger
      * @param string $level
      * @param string $type
      */
-    public function __construct(string $path, string $level, string $type = null)
+    public function __construct(string $path, string $filename, string $level, string $type = null)
     {
-        $this->path = $path;
+        $this->setPath($path);
+        $this->filename = $filename;
         $this->level = $level;
         $this->type = $type;
     }
@@ -51,7 +58,7 @@ class Logger
      */
     public static function getInstance(string $path = self::DEFAULT_PATH, string $level = self::LOG_DEBUG): Logger
     {
-        return new self($path . date("d-m-Y") . ".log", $level);
+        return new self($path, date("d-m-Y") . ".log", $level);
     }
 
     /**
@@ -67,12 +74,12 @@ class Logger
             $type = (null != $this->type ? $this->type : "");
 
             if (strpos($this->path, ".csv")) {
-                $begin = "$date, $this->level, $type ";
+                $begin = "$date, $this->level, " . (null != $type ? "$type, " : "");
             } else {
-                $begin = "[$date] [$this->level] [type: $type]";
+                $begin = "[$date] [$this->level] " . (null != $type ? "[type: $type] " : "");
             }
 
-            file_put_contents($this->path, $begin . $message . "\n", FILE_APPEND);
+            file_put_contents($this->path . "/" . $this->filename, $begin . $message . "\n", FILE_APPEND);
         } catch (\Exception $e) {
             throw new LogException($e->getMessage(), LogException::ERROR_DURING_PUT_IN_FILE);
         }
@@ -127,8 +134,31 @@ class Logger
      */
     public function setPath(string $path)
     {
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+
         $this->path = $path;
     }
+
+    /**
+     * Get the name of the file
+     * @return string
+     */
+    public function getFilename(): string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Define the name of the file
+     * @param string $filename
+     */
+    public function setFilename(string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
 
     /**
      * Get the current level
