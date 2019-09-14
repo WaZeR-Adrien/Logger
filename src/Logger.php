@@ -3,8 +3,6 @@ namespace AdrienM\Logger;
 
 class Logger
 {
-    const DEFAULT_PATH = __DIR__ . "../../../logs/";
-    
     const LOG_DEBUG = "DEBUG";
     const LOG_INFO = "INFO";
     const LOG_ALERT = "ALERT";
@@ -53,11 +51,16 @@ class Logger
 
     /**
      * Get instance of the Logger
+     * @param string $path
      * @param string $level
      * @return Logger
      */
-    public static function getInstance(string $path = self::DEFAULT_PATH, string $level = self::LOG_DEBUG): Logger
+    public static function getInstance(string $path = null, string $level = self::LOG_DEBUG): Logger
     {
+        if (null == $path) {
+            $path = dirname(__DIR__, 4) . "/logs/";
+        }
+
         return new self($path, date("d-m-Y") . ".log", $level);
     }
 
