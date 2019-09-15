@@ -106,7 +106,7 @@ class Logger
     private function parse(): array
     {
         try {
-            $file = fopen($this->path, 'r');
+            $file = fopen($this->path . "/" . $this->filename, 'r');
 
             // lines
             $logs = [];
