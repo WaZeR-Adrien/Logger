@@ -76,7 +76,7 @@ class Logger
 
             $type = (null != $this->type ? $this->type : "");
 
-            if (strpos($this->path, ".csv")) {
+            if (strpos($this->filename, ".csv")) {
                 $begin = "$date, $this->level, " . (null != $type ? "$type, " : "");
             } else {
                 $begin = "[$date] [$this->level] " . (null != $type ? "[type: $type] " : "");
